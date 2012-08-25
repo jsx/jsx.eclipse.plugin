@@ -1,0 +1,2 @@
+jsx.eclipse.plugin
+==================
