@@ -21,7 +21,7 @@ public class JSXEditor extends TextEditor {
 	public JSXEditor() {
 		super();
 		colorManager = new ColorManager();
-		setSourceViewerConfiguration(new JSXConfiguration(colorManager));
+		setSourceViewerConfiguration(new JSXConfiguration(colorManager, this));
 		setDocumentProvider(new JSXDocumentProvider());
 	}
 	public void dispose() {

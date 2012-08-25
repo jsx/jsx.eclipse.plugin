@@ -19,9 +19,11 @@ public class JSXConfiguration extends SourceViewerConfiguration {
 	private JSXTagScanner tagScanner;
 	private JSXScanner scanner;
 	private ColorManager colorManager;
+	private JSXEditor editor;
 
-	public JSXConfiguration(ColorManager colorManager) {
+	public JSXConfiguration(ColorManager colorManager, JSXEditor editor) {
 		this.colorManager = colorManager;
+		this.editor = editor;
 	}
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		return new String[] {
@@ -77,11 +79,10 @@ public class JSXConfiguration extends SourceViewerConfiguration {
 	}
 	
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
-		System.out.println("JSXConfiguration.getContentAssistant");
 		ContentAssistant assistant = new ContentAssistant();
 		assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
 		
-		JSXAssistProcessor processor = new JSXAssistProcessor();
+		JSXAssistProcessor processor = new JSXAssistProcessor(editor);
 		assistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
 		assistant.install(sourceViewer);
 		

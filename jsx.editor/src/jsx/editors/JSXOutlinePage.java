@@ -8,9 +8,11 @@ import java.util.List;
 import jsx.JSXEditorPlugin;
 import jsx.editors.ast.IJSXNode;
 import jsx.editors.ast.JSXClassNode;
+import jsx.preferences.PreferenceConstants;
 
 import net.arnx.jsonic.JSON;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -66,14 +68,16 @@ public class JSXOutlinePage extends ContentOutlinePage {
 		IFileEditorInput input = (IFileEditorInput) editor.getEditorInput();
 		IFile file = input.getFile();
 		IPath loc = file.getLocation();
-		System.out.println(loc);
 		ArrayList elements = null;
 		Runtime rt = Runtime.getRuntime();
+		IPreferenceStore store = JSXEditorPlugin.getDefault().getPreferenceStore();
 		try {
-			Process p = rt.exec("/Users/tateno.masahiro/.nodebrew/current/bin/node /Users/tateno.masahiro/jsx/JSX/bin/jsx --mode parse " + loc.toString());
-			InputStream in = p.getInputStream();
+			String cmd = store.getString(PreferenceConstants.NODE_PATH) + " " + store.getString(PreferenceConstants.JSX_PATH) + " --mode parse " + loc.toString();
+			Process p = rt.exec(cmd);
+ 			InputStream in = p.getInputStream();
 			elements = JSON.decode(in);
 			
+			System.out.println(cmd);
 			System.out.println(elements);
 		} catch( Exception ex ) {
 			ex.printStackTrace();
